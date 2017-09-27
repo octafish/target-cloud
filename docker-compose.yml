@@ -8,33 +8,17 @@ services:
     image: octafish/eureka-service
     ports:
       - "8761:8761"
-    depends_on:
-      - config-service
     links:
     - config-service
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://config-service:8888"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
-  target-service:
-    image: octafish/target-service
-    ports:
-      - "8000:8000"
-    depends_on:
-      - config-service
-      - eureka-service
-      -  mongo
-    links:
-      - config-service
-      - eureka-service
-      - mongo
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://config-service:8888"]
-      interval: 1m30s
-      timeout: 10s
-      retries: 3
   mongo:
     image: mongo
     ports:
       - "27017:27017"
+  target-service:
+      image: octafish/target-service
+      ports:
+        - "8001:8001"
+      links:
+      - config-service
+      - eureka-service
+      - mongo
