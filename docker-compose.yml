@@ -15,10 +15,18 @@ services:
     ports:
       - "27017:27017"
   target-service:
-      image: octafish/target-service
-      ports:
-        - "8000:8000"
-      links:
+    image: octafish/target-service
+    ports:
+      - "8000:8000"
+    links:
       - config-service
       - eureka-service
       - mongo
+  target-client:
+    image: octafish/target-client
+    ports:
+      - "8001:8001"
+    links:
+      - config-service
+      - eureka-service
+      - target-service
